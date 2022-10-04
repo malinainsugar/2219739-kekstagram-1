@@ -97,4 +97,4 @@ for (let i = 1; i <= PHOTO_COUNT; i++) {
       name: getRandomArrayElement(NAMES)
     }]
   });
-};
+}
