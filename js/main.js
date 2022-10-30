@@ -1,2 +1,2 @@
 
-import './rendering-thumbnails.js';
+import './rendering-mini.js';

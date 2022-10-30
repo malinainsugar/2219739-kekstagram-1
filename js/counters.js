@@ -1,16 +1,21 @@
-let i = 1;
+let idPhoto = 1;
 function createID () {
-  return i++;
+  return idPhoto++;
 }
 
-let j = 1;
+let url = 1;
 function createURL () {
-  return j++;
+  return url++;
 }
 
-let k = 1;
+let idComments = 1;
 function createIDComments () {
-  return k++;
+  return idComments++;
 }
 
-export {createID, createURL, createIDComments};
+let idDescpiptions = 0;
+function createIDDescpiptions () {
+  return idDescpiptions++;
+}
+
+export {createID, createURL, createIDComments, createIDDescpiptions};
