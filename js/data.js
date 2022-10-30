@@ -88,6 +88,6 @@ function createPhotoDescriptions () {
   };
 }
 
-const photoDescriptions = () => Array.from({length: PHOTO_COUNT}, createPhotoDescriptions);
+const createPhotos = () => Array.from({length: PHOTO_COUNT}, createPhotoDescriptions);
 
-export {photoDescriptions};
+export {createPhotos};
