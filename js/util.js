@@ -15,7 +15,7 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
 
 const isEscapeKey = (evt) => evt.keyCode === 27;
 
-function checksForRepeats (list) {
+function checkForRepeats (list) {
   let containerForСomparison = {};
   for (let element of list) {
     if (containerForСomparison[element]) {
@@ -26,6 +26,6 @@ function checksForRepeats (list) {
   return false;
 };
 
-export {getRandomArrayElement, getRandomNumber, isEscapeKey, checksForRepeats};
+export {getRandomArrayElement, getRandomNumber, isEscapeKey, checkForRepeats};
 
 

@@ -1,4 +1,4 @@
-import { isEscapeKey, checksForRepeats } from './util.js';
+import { isEscapeKey, checkForRepeats } from './util.js';
 
 const MAX_LENGTH_COMMENT = 140;
 const MAX_LENGTH_HASHTAG = 20;
@@ -95,7 +95,7 @@ function validateHashtag (value) {
             massageHashtagError = HASHTAG_RULES.MAX_COUNT;
             return false;
         }
-        if (checksForRepeats(hashtags)) {
+        if (checkForRepeats(hashtags)) {
             massageHashtagError = HASHTAG_RULES.NO_REPEAT;
             return false;
         }
