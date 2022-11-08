@@ -32,75 +32,75 @@ loadImgButtonElement.addEventListener('input', function () {
 });
 
 function openEditingWindow () {
-    editingWindow.classList.remove("hidden");
-    body.classList.add("modal-open");
+  editingWindow.classList.remove('hidden');
+  body.classList.add('modal-open');
 
-    editingCloseButtonElement.addEventListener('click', buttonClickHandler);
-    document.addEventListener('keydown', buttonKeydownHandler);
-    pristine.validate();
-    hashtagsInputElement.addEventListener('input', validateForm);
-    descriptionInputElement.addEventListener('input', validateForm);
+  editingCloseButtonElement.addEventListener('click', buttonClickHandler);
+  document.addEventListener('keydown', buttonKeydownHandler);
+  pristine.validate();
+  hashtagsInputElement.addEventListener('input', validateForm);
+  descriptionInputElement.addEventListener('input', validateForm);
 };
 
 function closeEditingWindow () {
-    editingWindow.classList.add("hidden");
-    body.classList.remove("modal-open");
+  editingWindow.classList.add('hidden');
+  body.classList.remove('modal-open');
 
-    editingCloseButtonElement.removeEventListener('click', buttonClickHandler);
-    document.removeEventListener('keydown', buttonKeydownHandler);
-    hashtagsInputElement.removeEventListener('input', validateForm);
-    descriptionInputElement.removeEventListener('input', validateForm);
+  editingCloseButtonElement.removeEventListener('click', buttonClickHandler);
+  document.removeEventListener('keydown', buttonKeydownHandler);
+  hashtagsInputElement.removeEventListener('input', validateForm);
+  descriptionInputElement.removeEventListener('input', validateForm);
 };
 
 const buttonClickHandler = () => closeEditingWindow();
 
 function buttonKeydownHandler (evt) {
-    if (isEscapeKey(evt)) {
-        closeEditingWindow();
-    };
+  if (isEscapeKey(evt)) {
+    closeEditingWindow();
+  };
 };
 
 const pristine = new Pristine(form, {
-    classTo: 'img-upload__field-wrapper',
-    errorTextParent: 'img-upload__field-wrapper', 
-    errorTextTag: 'span', 
-    errorTextClass: 'img-upload__error'
-  }, true);
+  classTo: 'img-upload__field-wrapper',
+  errorTextParent: 'img-upload__field-wrapper', 
+  errorTextTag: 'span', 
+  errorTextClass: 'img-upload__error'
+}, true);
 
 function validateHashtag (value) {
-    massageHashtagError = HASHTAG_RULES.OKAY;
-    value = value.trim();
-    value = value.toLowerCase();
-    const hashtags = value.split(' ');
-    if (hashtags[0] !== '') {
-        for (let hashtag of hashtags) {
-            if (!re.test(hashtag)){
-                if (hashtag[0] !== '#') {
-                    massageHashtagError = HASHTAG_RULES.HASHTAG_SYMBOL;
-                    return false;
-                }
-                if (hashtag.length === 1 && hashtag[0]=== "#") {
-                    massageHashtagError = HASHTAG_RULES.ONLY_HASHTAG;
-                    return false;
-                }
-                if (hashtag.length > MAX_LENGTH_HASHTAG) {
-                    massageHashtagError = HASHTAG_RULES.MAX_LENGTH;
-                    return false;
-                }
-                massageHashtagError = HASHTAG_RULES.VALID_CHARACTERS;
-                return false;
-            }
-        }
-        if (hashtags.length > MAX_HASHTAGS_COUNT) {
-            massageHashtagError = HASHTAG_RULES.MAX_COUNT;
-            return false;
-        }
-        if (checkForRepeats(hashtags)) {
-            massageHashtagError = HASHTAG_RULES.NO_REPEAT;
-            return false;
-        }
-    }
-    return true;
+  massageHashtagError = HASHTAG_RULES.OKAY;
+  value = value.trim();
+  value = value.toLowerCase();
+  const hashtags = value.split(' ');
+  if (hashtags[0] !== '') {
+      for (let hashtag of hashtags) {
+          if (!re.test(hashtag)){
+              if (hashtag[0] !== '#') {
+                  massageHashtagError = HASHTAG_RULES.HASHTAG_SYMBOL;
+                  return false;
+              }
+              if (hashtag.length === 1 && hashtag[0]=== "#") {
+                  massageHashtagError = HASHTAG_RULES.ONLY_HASHTAG;
+                  return false;
+              }
+              if (hashtag.length > MAX_LENGTH_HASHTAG) {
+                  massageHashtagError = HASHTAG_RULES.MAX_LENGTH;
+                  return false;
+              }
+              massageHashtagError = HASHTAG_RULES.VALID_CHARACTERS;
+              return false;
+          }
+      }
+      if (hashtags.length > MAX_HASHTAGS_COUNT) {
+          massageHashtagError = HASHTAG_RULES.MAX_COUNT;
+          return false;
+      }
+      if (checkForRepeats(hashtags)) {
+          massageHashtagError = HASHTAG_RULES.NO_REPEAT;
+          return false;
+      }
+  }
+  return true;
 };
 
 const generateMessageHashtags = () => massageHashtagError
@@ -111,9 +111,9 @@ pristine.addValidator(hashtagsInputElement, validateHashtag, generateMessageHash
 pristine.addValidator(descriptionInputElement, validateDescription, 'Длина комментария не может составлять больше 140 символов');
 
 function validateForm () {
-    if (pristine.validate()) {
-        submitButtonElement.disabled = false; 
-    } else {
-        submitButtonElement.disabled = true; 
-    }
+  if (pristine.validate()) {
+      submitButtonElement.disabled = false; 
+  } else {
+      submitButtonElement.disabled = true; 
+  }
 }
