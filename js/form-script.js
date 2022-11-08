@@ -50,13 +50,13 @@ function validateHashtag (value) {
   value = value.toLowerCase();
   const hashtags = value.split(' ');
   if (hashtags[0] !== '') {
-    for (let hashtag of hashtags) {
+    for (const hashtag of hashtags) {
       if (!re.test(hashtag)){
         if (hashtag[0] !== '#') {
           massageHashtagError = HASHTAG_RULES.HASHTAG_SYMBOL;
-            return false;
+          return false;
         }
-        if (hashtag.length === 1 && hashtag[0]=== "#") {
+        if (hashtag.length === 1 && hashtag[0]=== '#') {
           massageHashtagError = HASHTAG_RULES.ONLY_HASHTAG;
           return false;
         }
@@ -64,8 +64,8 @@ function validateHashtag (value) {
           massageHashtagError = HASHTAG_RULES.MAX_LENGTH;
           return false;
         }
-          massageHashtagError = HASHTAG_RULES.VALID_CHARACTERS;
-          return false;
+        massageHashtagError = HASHTAG_RULES.VALID_CHARACTERS;
+        return false;
       }
     }
     if (hashtags.length > MAX_HASHTAGS_COUNT) {
@@ -98,13 +98,13 @@ function validateForm () {
 function openEditingWindow () {
   editingWindow.classList.remove('hidden');
   body.classList.add('modal-open');
-  
+
   editingCloseButtonElement.addEventListener('click', buttonClickHandler);
   document.addEventListener('keydown', buttonKeydownHandler);
   hashtagsInputElement.addEventListener('input', validateForm);
   descriptionInputElement.addEventListener('input', validateForm);
 }
-  
+
 function closeEditingWindow () {
   editingWindow.classList.add('hidden');
   body.classList.remove('modal-open');
