@@ -393,6 +393,12 @@ main {
   margin-bottom: 30px;
 }
 
+.img-upload__error {
+  margin: 10px;
+  color: red;
+  display: block;
+}
+
 
 /**
  * Кнопки изменения масштаба изобраения
