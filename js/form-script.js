@@ -27,9 +27,7 @@ const hashtagsInputElement = form.querySelector('input[name="hashtags"]');
 const descriptionInputElement = form.querySelector('textarea[name="description"]');
 
 
-loadImgButtonElement.addEventListener('input', function () {
-  openEditingWindow();
-});
+loadImgButtonElement.addEventListener('input', openEditingWindow);
 
 function openEditingWindow () {
   editingWindow.classList.remove('hidden');
@@ -37,10 +35,17 @@ function openEditingWindow () {
 
   editingCloseButtonElement.addEventListener('click', buttonClickHandler);
   document.addEventListener('keydown', buttonKeydownHandler);
-  pristine.validate();
   hashtagsInputElement.addEventListener('input', validateForm);
   descriptionInputElement.addEventListener('input', validateForm);
-};
+}
+
+const buttonClickHandler = () => closeEditingWindow();
+
+function buttonKeydownHandler (evt) {
+  if (isEscapeKey(evt)) {
+    closeEditingWindow();
+  }
+}
 
 function closeEditingWindow () {
   editingWindow.classList.add('hidden');
@@ -50,15 +55,7 @@ function closeEditingWindow () {
   document.removeEventListener('keydown', buttonKeydownHandler);
   hashtagsInputElement.removeEventListener('input', validateForm);
   descriptionInputElement.removeEventListener('input', validateForm);
-};
-
-const buttonClickHandler = () => closeEditingWindow();
-
-function buttonKeydownHandler (evt) {
-  if (isEscapeKey(evt)) {
-    closeEditingWindow();
-  };
-};
+}
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -103,7 +100,7 @@ function validateHashtag (value) {
   return true;
 };
 
-const generateMessageHashtags = () => massageHashtagError
+const generateMessageHashtags = () => massageHashtagError;
 
 const validateDescription = (value) => value.length <= MAX_LENGTH_COMMENT;
 
