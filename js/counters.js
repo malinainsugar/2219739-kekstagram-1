@@ -13,9 +13,9 @@ function createIDComments () {
   return idComments++;
 }
 
-let idDescpiptions = 0;
-function createIDDescpiptions () {
-  return idDescpiptions++;
+let idDescriptions = 0;
+function createIDDescriptions () {
+  return idDescriptions++;
 }
 
-export {createID, createURL, createIDComments, createIDDescpiptions};
+export {createID, createURL, createIDComments, createIDDescriptions};

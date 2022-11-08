@@ -1,5 +1,5 @@
 import {getRandomArrayElement, getRandomNumber} from './util.js';
-import {createID, createURL, createIDComments, createIDDescpiptions} from './counters.js';
+import {createID, createURL, createIDComments, createIDDescriptions} from './counters.js';
 
 const NAMES = [
   'Иван',
@@ -82,7 +82,7 @@ function createPhotoDescriptions () {
   return {
     id: createID(),
     url: `photos/${createURL()}.jpg`,
-    description: DESCRIPTIONS[createIDDescpiptions()],
+    description: DESCRIPTIONS[createIDDescriptions()],
     likes: getRandomNumber(15, 200),
     comments: Array.from({length: getRandomNumber(1, 5)}, createComments)
   };
