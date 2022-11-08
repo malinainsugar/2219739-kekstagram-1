@@ -29,16 +29,6 @@ const descriptionInputElement = form.querySelector('textarea[name="description"]
 
 loadImgButtonElement.addEventListener('input', openEditingWindow);
 
-function openEditingWindow () {
-  editingWindow.classList.remove('hidden');
-  body.classList.add('modal-open');
-
-  editingCloseButtonElement.addEventListener('click', buttonClickHandler);
-  document.addEventListener('keydown', buttonKeydownHandler);
-  hashtagsInputElement.addEventListener('input', validateForm);
-  descriptionInputElement.addEventListener('input', validateForm);
-}
-
 const buttonClickHandler = () => closeEditingWindow();
 
 function buttonKeydownHandler (evt) {
@@ -47,20 +37,10 @@ function buttonKeydownHandler (evt) {
   }
 }
 
-function closeEditingWindow () {
-  editingWindow.classList.add('hidden');
-  body.classList.remove('modal-open');
-
-  editingCloseButtonElement.removeEventListener('click', buttonClickHandler);
-  document.removeEventListener('keydown', buttonKeydownHandler);
-  hashtagsInputElement.removeEventListener('input', validateForm);
-  descriptionInputElement.removeEventListener('input', validateForm);
-}
-
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
-  errorTextParent: 'img-upload__field-wrapper', 
-  errorTextTag: 'span', 
+  errorTextParent: 'img-upload__field-wrapper',
+  errorTextTag: 'span',
   errorTextClass: 'img-upload__error'
 }, true);
 
@@ -70,35 +50,35 @@ function validateHashtag (value) {
   value = value.toLowerCase();
   const hashtags = value.split(' ');
   if (hashtags[0] !== '') {
-      for (let hashtag of hashtags) {
-          if (!re.test(hashtag)){
-              if (hashtag[0] !== '#') {
-                  massageHashtagError = HASHTAG_RULES.HASHTAG_SYMBOL;
-                  return false;
-              }
-              if (hashtag.length === 1 && hashtag[0]=== "#") {
-                  massageHashtagError = HASHTAG_RULES.ONLY_HASHTAG;
-                  return false;
-              }
-              if (hashtag.length > MAX_LENGTH_HASHTAG) {
-                  massageHashtagError = HASHTAG_RULES.MAX_LENGTH;
-                  return false;
-              }
-              massageHashtagError = HASHTAG_RULES.VALID_CHARACTERS;
-              return false;
-          }
-      }
-      if (hashtags.length > MAX_HASHTAGS_COUNT) {
-          massageHashtagError = HASHTAG_RULES.MAX_COUNT;
+    for (let hashtag of hashtags) {
+      if (!re.test(hashtag)){
+        if (hashtag[0] !== '#') {
+          massageHashtagError = HASHTAG_RULES.HASHTAG_SYMBOL;
+            return false;
+        }
+        if (hashtag.length === 1 && hashtag[0]=== "#") {
+          massageHashtagError = HASHTAG_RULES.ONLY_HASHTAG;
+          return false;
+        }
+        if (hashtag.length > MAX_LENGTH_HASHTAG) {
+          massageHashtagError = HASHTAG_RULES.MAX_LENGTH;
+          return false;
+        }
+          massageHashtagError = HASHTAG_RULES.VALID_CHARACTERS;
           return false;
       }
-      if (checkForRepeats(hashtags)) {
-          massageHashtagError = HASHTAG_RULES.NO_REPEAT;
-          return false;
-      }
+    }
+    if (hashtags.length > MAX_HASHTAGS_COUNT) {
+      massageHashtagError = HASHTAG_RULES.MAX_COUNT;
+      return false;
+    }
+    if (checkForRepeats(hashtags)) {
+      massageHashtagError = HASHTAG_RULES.NO_REPEAT;
+      return false;
+    }
   }
   return true;
-};
+}
 
 const generateMessageHashtags = () => massageHashtagError;
 
@@ -109,8 +89,28 @@ pristine.addValidator(descriptionInputElement, validateDescription, 'Длина 
 
 function validateForm () {
   if (pristine.validate()) {
-      submitButtonElement.disabled = false; 
+    submitButtonElement.disabled = false;
   } else {
-      submitButtonElement.disabled = true; 
+    submitButtonElement.disabled = true;
   }
+}
+
+function openEditingWindow () {
+  editingWindow.classList.remove('hidden');
+  body.classList.add('modal-open');
+  
+  editingCloseButtonElement.addEventListener('click', buttonClickHandler);
+  document.addEventListener('keydown', buttonKeydownHandler);
+  hashtagsInputElement.addEventListener('input', validateForm);
+  descriptionInputElement.addEventListener('input', validateForm);
+}
+  
+function closeEditingWindow () {
+  editingWindow.classList.add('hidden');
+  body.classList.remove('modal-open');
+
+  editingCloseButtonElement.removeEventListener('click', buttonClickHandler);
+  document.removeEventListener('keydown', buttonKeydownHandler);
+  hashtagsInputElement.removeEventListener('input', validateForm);
+  descriptionInputElement.removeEventListener('input', validateForm);
 }
