@@ -1,5 +1,5 @@
 let idPhoto = 1;
-function createID () {
+function createIDPhoto () {
   return idPhoto++;
 }
 
@@ -13,9 +13,9 @@ function createIDComments () {
   return idComments++;
 }
 
-let idDescpiptions = 0;
-function createIDDescpiptions () {
-  return idDescpiptions++;
+let idDescriptions = 0;
+function createIDDescriptions () {
+  return idDescriptions++;
 }
 
-export {createID, createURL, createIDComments, createIDDescpiptions};
+export {createIDPhoto, createURL, createIDComments, createIDDescriptions};

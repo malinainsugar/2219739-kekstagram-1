@@ -7,15 +7,15 @@ const closedButtomElement = bigPictureWindow.querySelector('.big-picture__cancel
 bigPictureWindow.querySelector('.social__comment-count').classList.add('hidden');
 bigPictureWindow.querySelector('.comments-loader').classList.add('hidden');
 
-const buttonClickHandler = () => closedWindow();
+const buttonClickHandler = () => closeWindow();
 
-function buttonKeydownHandler () {
-  if (isEscapeKey) {
-    closedWindow();
+function buttonKeydownHandler (evt) {
+  if (isEscapeKey(evt)) {
+    closeWindow();
   }
 }
 
-function closedWindow () {
+function closeWindow () {
   document.removeEventListener('keydown', buttonKeydownHandler);
   closedButtomElement.removeEventListener('click', buttonClickHandler);
   bigPictureWindow.classList.add('hidden');
