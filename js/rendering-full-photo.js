@@ -8,7 +8,7 @@ const commentsContainer = bigPictureWindow.querySelector('.social__comments');
 const loadingСommentsButtonElement = bigPictureWindow.querySelector('.comments-loader');
 const shownCommentsCount = bigPictureWindow.querySelector('.shown-comments-count');
 const MAX_COMMENTS_COUNT = 5;
-let commentCounter;
+let commentsCounter;
 let allComments;
 
 const buttonClickHandler = () => closeWindow();
@@ -38,19 +38,19 @@ function appendNewComments({avatar, name, message}) {
 const updateCommentsCount = (value) => shownCommentsCount.textContent = value;
 
 function loadNewComments () {
-  let j = MAX_COMMENTS_COUNT;
-  if (allComments.length > commentCounter) {
-    if ((allComments.length - commentCounter) <= MAX_COMMENTS_COUNT) {
-      j = allComments.length - commentCounter;
+  let addingCounter = MAX_COMMENTS_COUNT;
+  if (allComments.length > commentsCounter) {
+    if ((allComments.length - commentsCounter) <= MAX_COMMENTS_COUNT) {
+      addingCounter = allComments.length - commentsCounter;
       loadingСommentsButtonElement.classList.add('hidden');
     }
     const fragment = document.createDocumentFragment();
-    allComments.slice(commentCounter, commentCounter + j).forEach((comment) => {
+    allComments.slice(commentsCounter, commentsCounter + addingCounter).forEach((comment) => {
       fragment.appendChild(appendNewComments(comment));
     });
     commentsContainer.appendChild(fragment);
-    commentCounter += j;
-    updateCommentsCount(commentCounter);
+    commentsCounter += addingCounter;
+    updateCommentsCount(commentsCounter);
   }
 };
 
@@ -63,7 +63,7 @@ function openBigPictureWindow ({url, description, likes, comments}) {
 
   commentsContainer.innerHTML = '';
   allComments = comments;
-  commentCounter = 0;
+  commentsCounter = 0;
   loadNewComments()
 
   bigPictureWindow.classList.remove('hidden');
