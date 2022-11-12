@@ -32,7 +32,7 @@ loadImgButtonElement.addEventListener('input', openEditingWindow);
 const buttonClickHandler = () => closeEditingWindow();
 
 function buttonKeydownHandler (evt) {
-  if (isEscapeKey(evt)) {
+  if (isEscapeKey(evt) && (evt.target !== hashtagsInputElement && evt.target !== descriptionInputElement)) {
     closeEditingWindow();
   }
 }
@@ -113,4 +113,8 @@ function closeEditingWindow () {
   document.removeEventListener('keydown', buttonKeydownHandler);
   hashtagsInputElement.removeEventListener('input', validateForm);
   descriptionInputElement.removeEventListener('input', validateForm);
+
+  hashtagsInputElement.value = '';
+  descriptionInputElement.value = '';
+  loadImgButtonElement.value = '';
 }
