@@ -35,7 +35,9 @@ function appendNewComments({avatar, name, message}) {
   return newComment;
 }
 
-const updateCommentsCount = (value) => shownCommentsCount.textContent = value;
+function updateCommentsCount (value) {
+  shownCommentsCount.textContent = value;
+}
 
 function loadNewComments () {
   let addingCounter = MAX_COMMENTS_COUNT;
@@ -52,7 +54,7 @@ function loadNewComments () {
     commentsCounter += addingCounter;
     updateCommentsCount(commentsCounter);
   }
-};
+}
 
 function openBigPictureWindow ({url, description, likes, comments}) {
   bigPictureWindow.querySelector('.big-picture__img').querySelector('img').setAttribute('src', url);
@@ -64,7 +66,7 @@ function openBigPictureWindow ({url, description, likes, comments}) {
   commentsContainer.innerHTML = '';
   allComments = comments;
   commentsCounter = 0;
-  loadNewComments()
+  loadNewComments();
 
   bigPictureWindow.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
