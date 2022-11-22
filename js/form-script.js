@@ -1,4 +1,6 @@
 import { isEscapeKey, checkForRepeats } from './util.js';
+import { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters } from './editing-image.js';
+
 
 const MAX_LENGTH_COMMENT = 140;
 const MAX_LENGTH_HASHTAG = 20;
@@ -17,7 +19,6 @@ const HASHTAG_RULES = {
 
 const re = /^#[A-Za-zА-Яа-я0-9]{1,19}$/;
 
-const form = document.querySelector('.img-upload__form');
 const body = document.querySelector('body');
 const loadImgButtonElement = form.querySelector('#upload-file');
 const editingWindow = form.querySelector('.img-upload__overlay');
@@ -103,6 +104,9 @@ function openEditingWindow () {
   document.addEventListener('keydown', buttonKeydownHandler);
   hashtagsInputElement.addEventListener('input', validateForm);
   descriptionInputElement.addEventListener('input', validateForm);
+
+  addEventListenerImage();
+  addsFilter();
 }
 
 function closeEditingWindow () {
@@ -114,7 +118,12 @@ function closeEditingWindow () {
   hashtagsInputElement.removeEventListener('input', validateForm);
   descriptionInputElement.removeEventListener('input', validateForm);
 
+  removeEventListenerImage();
+  removeFilters();
+
   hashtagsInputElement.value = '';
   descriptionInputElement.value = '';
   loadImgButtonElement.value = '';
 }
+
+export { form };
