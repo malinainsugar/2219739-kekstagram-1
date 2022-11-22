@@ -27,7 +27,7 @@ function zoomInImage () {
     scaleValue += 25;
     scaleValueElement.value = `${scaleValue}%`;
     if (scaleValue === 100) {
-      imageElement.style.transform = `scale(1)`;
+      imageElement.style.transform = 'scale(1)';
     } else {
       imageElement.style.transform = `scale(0.${scaleValue})`;
     }
