@@ -2,46 +2,46 @@ let filterType = 'none';
 
 const form = document.querySelector('.img-upload__form');
 
-const zoomOutButtonElement = form.querySelector('.scale__control--smaller')
-const zoomButtonElement = form.querySelector('.scale__control--bigger')
-const scaleValueElement = form.querySelector('.scale__control--value')
-const imageElement = form.querySelector('.img-upload__preview img')
+const zoomOutButtonElement = form.querySelector('.scale__control--smaller');
+const zoomButtonElement = form.querySelector('.scale__control--bigger');
+const scaleValueElement = form.querySelector('.scale__control--value');
+const imageElement = form.querySelector('.img-upload__preview img');
 
-const filterButtonsContainer = form.querySelector('.effects__list')
-const sliderElement = form.querySelector('.effect-level__slider')
-const filterValueElement = form.querySelector('.effect-level__value')
+const filterButtonsContainer = form.querySelector('.effects__list');
+const sliderElement = form.querySelector('.effect-level__slider');
+const filterValueElement = form.querySelector('.effect-level__value');
 
 
 function zoomOutImage () {
-  let scaleValue = Number(scaleValueElement.value.replace('%', ''))
+  let scaleValue = Number(scaleValueElement.value.replace('%', ''));
   if (scaleValue > 25) {
-    scaleValue -= 25
-    scaleValueElement.value = scaleValue + '%'
-    imageElement.style.transform = `scale(0.${scaleValue})`
+    scaleValue -= 25;
+    scaleValueElement.value = `${scaleValue}%`;
+    imageElement.style.transform = `scale(0.${scaleValue})`;
   }
 }
 
 function zoomInImage () {
-  let scaleValue = Number(scaleValueElement.value.replace('%', ''))
+  let scaleValue = Number(scaleValueElement.value.replace('%', ''));
   if (scaleValue < 100) {
-    scaleValue += 25
-    scaleValueElement.value = scaleValue + '%'
-    if (scaleValue == 100) {
-      imageElement.style.transform = `scale(1)`
+    scaleValue += 25;
+    scaleValueElement.value = `${scaleValue}%`;
+    if (scaleValue === 100) {
+      imageElement.style.transform = `scale(1)`;
     } else {
-      imageElement.style.transform = `scale(0.${scaleValue})`
+      imageElement.style.transform = `scale(0.${scaleValue})`;
     }
   }
 }
 
 function addEventListenerImage () {
-  zoomOutButtonElement.addEventListener('click', zoomOutImage)
-  zoomButtonElement.addEventListener('click', zoomInImage)
+  zoomOutButtonElement.addEventListener('click', zoomOutImage);
+  zoomButtonElement.addEventListener('click', zoomInImage);
 }
 
 function removeEventListenerImage () {
-  zoomOutButtonElement.removeEventListener('click', zoomOutImage)
-  zoomButtonElement.removeEventListener('click', zoomInImage)
+  zoomOutButtonElement.removeEventListener('click', zoomOutImage);
+  zoomButtonElement.removeEventListener('click', zoomInImage);
 }
 
 const FILTERS = {
@@ -188,7 +188,7 @@ function customiseFilter (filterID) {
   imageElement.className = '';
   imageElement.classList.add(filterClass);
   sliderElement.noUiSlider.updateOptions(options);
-};
+}
 
 function onFilterChange (evt) {
   if (evt.target.closest('.effects__item')) {
@@ -221,4 +221,4 @@ const removeFilters = () => {
 };
 
 
-export { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters }
+export { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters };

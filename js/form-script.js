@@ -126,4 +126,4 @@ function closeEditingWindow () {
   loadImgButtonElement.value = '';
 }
 
-export { form }
+export { form };
