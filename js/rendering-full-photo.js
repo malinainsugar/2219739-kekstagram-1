@@ -1,15 +1,16 @@
 
 import {isEscapeKey} from './util.js';
 
+const MAX_COMMENTS_COUNT = 5;
+let commentsCounter;
+let allComments;
+
 const bigPictureWindow = document.querySelector('.big-picture');
 const commentsTemplate = bigPictureWindow.querySelector('#comment').content.querySelector('.social__comment');
 const closedButtonElement = bigPictureWindow.querySelector('.big-picture__cancel');
 const commentsContainer = bigPictureWindow.querySelector('.social__comments');
 const loadingСommentsButtonElement = bigPictureWindow.querySelector('.comments-loader');
 const shownCommentsCount = bigPictureWindow.querySelector('.shown-comments-count');
-const MAX_COMMENTS_COUNT = 5;
-let commentsCounter;
-let allComments;
 
 const buttonClickHandler = () => closeWindow();
 
