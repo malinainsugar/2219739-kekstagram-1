@@ -1,5 +1,6 @@
 import { isEscapeKey, checkForRepeats } from './util.js';
 import { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters } from './editing-image.js';
+import { sendDataToServer } from './api.js';
 
 
 const MAX_LENGTH_COMMENT = 140;
@@ -27,6 +28,8 @@ const submitButtonElement = form.querySelector('.img-upload__submit');
 const hashtagsInputElement = form.querySelector('input[name="hashtags"]');
 const descriptionInputElement = form.querySelector('textarea[name="description"]');
 
+const successFormTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorFormTemplate = document.querySelector('#error').content.querySelector('.error');
 
 loadImgButtonElement.addEventListener('input', openEditingWindow);
 
@@ -121,9 +124,104 @@ function closeEditingWindow () {
   removeEventListenerImage();
   removeFilters();
 
+  editingWindow.querySelector('.scale__control--value').value = '100%';
   hashtagsInputElement.value = '';
   descriptionInputElement.value = '';
   loadImgButtonElement.value = '';
 }
 
-export { form };
+function blockSubmitButton () {
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Публикую...';
+}
+
+function unblockSubmitButton () {
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
+}
+
+function onSuccessButtonHandler () {
+  hideSuccessForm();
+}
+
+function onErrorButtonHandler () {
+  hideErrorForm();
+}
+
+function onOutOfFormHandler (evt) {
+  if (evt.target === successFormTemplate && evt.target !== successFormTemplate.querySelector('.success__inner')) {
+    hideSuccessForm();
+  }
+  if (evt.target === errorFormTemplate && evt.target !== errorFormTemplate.querySelector('.error__inner')) {
+    hideErrorForm();
+  }
+}
+
+function onSuccessEscKeydownHandler (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    hideSuccessForm();
+  }
+}
+
+function onErrorEscKeydownHandler (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    hideErrorForm();
+  }
+}
+
+function showSuccessForm() {
+  body.appendChild(successFormTemplate);
+  successFormTemplate.querySelector('.success__button').addEventListener('click', onSuccessButtonHandler);
+  document.addEventListener('click', onOutOfFormHandler);
+  document.addEventListener('keydown', onSuccessEscKeydownHandler);
+}
+
+function hideSuccessForm() {
+  successFormTemplate.querySelector('.success__button').removeEventListener('click', onSuccessButtonHandler);
+  document.removeEventListener('click', onOutOfFormHandler);
+  document.removeEventListener('keydown', onSuccessEscKeydownHandler);
+  body.removeChild(successFormTemplate);
+}
+
+function showErrorForm (message) {
+  editingWindow.classList.add('hidden');
+  errorFormTemplate.querySelector('.error__button').textContent = 'Попробовать ещё раз';
+  body.appendChild(errorFormTemplate);
+  errorFormTemplate.querySelector('.error__title').textContent = message;
+  errorFormTemplate.querySelector('.error__button').addEventListener('click', onErrorButtonHandler);
+  document.addEventListener('click', onOutOfFormHandler);
+  document.addEventListener('keydown', onErrorEscKeydownHandler);
+}
+
+function hideErrorForm() {
+  editingWindow.classList.remove('hidden');
+  errorFormTemplate.querySelector('.error__button').removeEventListener('click', onErrorButtonHandler);
+  document.removeEventListener('click', onOutOfFormHandler);
+  document.removeEventListener('keydown', onErrorEscKeydownHandler);
+  body.removeChild(errorFormTemplate);
+}
+
+function setUserFormSubmit(onSuccess) {
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    blockSubmitButton();
+
+    sendDataToServer(
+      () => {
+        onSuccess();
+        unblockSubmitButton();
+        showSuccessForm();
+      },
+      (message) => {
+        showErrorForm(message);
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
+  });
+}
+
+export {setUserFormSubmit, closeEditingWindow};

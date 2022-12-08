@@ -1,49 +1,3 @@
-let filterType = 'none';
-
-const form = document.querySelector('.img-upload__form');
-
-const zoomOutButtonElement = form.querySelector('.scale__control--smaller');
-const zoomButtonElement = form.querySelector('.scale__control--bigger');
-const scaleValueElement = form.querySelector('.scale__control--value');
-const imageElement = form.querySelector('.img-upload__preview img');
-
-const filterButtonsContainer = form.querySelector('.effects__list');
-const sliderElement = form.querySelector('.effect-level__slider');
-const filterValueElement = form.querySelector('.effect-level__value');
-
-
-function zoomOutImage () {
-  let scaleValue = Number(scaleValueElement.value.replace('%', ''));
-  if (scaleValue > 25) {
-    scaleValue -= 25;
-    scaleValueElement.value = `${scaleValue}%`;
-    imageElement.style.transform = `scale(0.${scaleValue})`;
-  }
-}
-
-function zoomInImage () {
-  let scaleValue = Number(scaleValueElement.value.replace('%', ''));
-  if (scaleValue < 100) {
-    scaleValue += 25;
-    scaleValueElement.value = `${scaleValue}%`;
-    if (scaleValue === 100) {
-      imageElement.style.transform = 'scale(1)';
-    } else {
-      imageElement.style.transform = `scale(0.${scaleValue})`;
-    }
-  }
-}
-
-function addEventListenerImage () {
-  zoomOutButtonElement.addEventListener('click', zoomOutImage);
-  zoomButtonElement.addEventListener('click', zoomInImage);
-}
-
-function removeEventListenerImage () {
-  zoomOutButtonElement.removeEventListener('click', zoomOutImage);
-  zoomButtonElement.removeEventListener('click', zoomInImage);
-}
-
 const FILTERS = {
   NONE: {
     range: {
@@ -144,6 +98,52 @@ const FILTERS = {
   }
 };
 
+let filterType = 'none';
+
+const form = document.querySelector('.img-upload__form');
+
+const zoomOutButtonElement = form.querySelector('.scale__control--smaller');
+const zoomButtonElement = form.querySelector('.scale__control--bigger');
+const scaleValueElement = form.querySelector('.scale__control--value');
+const imageElement = form.querySelector('.img-upload__preview img');
+
+const filterButtonsContainer = form.querySelector('.effects__list');
+const sliderElement = form.querySelector('.effect-level__slider');
+const filterValueElement = form.querySelector('.effect-level__value');
+
+
+function imageZoomOutHandler () {
+  let scaleValue = parseInt(scaleValueElement.value, 10);
+  if (scaleValue > 25) {
+    scaleValue -= 25;
+    scaleValueElement.value = `${scaleValue}%`;
+    imageElement.style.transform = `scale(0.${scaleValue})`;
+  }
+}
+
+function imageZoomInHandler () {
+  let scaleValue = parseInt(scaleValueElement.value, 10);
+  if (scaleValue <= 75) {
+    scaleValue += 25;
+    scaleValueElement.value = `${scaleValue}%`;
+    if (scaleValue === 100) {
+      imageElement.style.transform = 'scale(1)';
+    } else {
+      imageElement.style.transform = `scale(0.${scaleValue})`;
+    }
+  }
+}
+
+function addEventListenerImage () {
+  zoomOutButtonElement.addEventListener('click', imageZoomOutHandler);
+  zoomButtonElement.addEventListener('click', imageZoomInHandler);
+}
+
+function removeEventListenerImage () {
+  zoomOutButtonElement.removeEventListener('click', imageZoomOutHandler);
+  zoomButtonElement.removeEventListener('click', imageZoomInHandler);
+}
+
 function customiseFilter (filterID) {
   let filterClass;
   let options;
@@ -190,7 +190,7 @@ function customiseFilter (filterID) {
   sliderElement.noUiSlider.updateOptions(options);
 }
 
-function onFilterChange (evt) {
+function onFilterChangeHandler (evt) {
   if (evt.target.closest('.effects__item')) {
     customiseFilter(evt.target.id);
   }
@@ -200,7 +200,7 @@ function addsFilter () {
   filterValueElement.value = 1;
   noUiSlider.create(sliderElement, FILTERS.NONE);
   sliderElement.setAttribute('hidden', true);
-  filterButtonsContainer.addEventListener('change', onFilterChange);
+  filterButtonsContainer.addEventListener('change', onFilterChangeHandler);
 
   sliderElement.noUiSlider.on('update', () => {
     filterValueElement.value = parseFloat(sliderElement.noUiSlider.get());
@@ -213,7 +213,7 @@ function addsFilter () {
 }
 
 const removeFilters = () => {
-  filterButtonsContainer.removeEventListener('change', onFilterChange);
+  filterButtonsContainer.removeEventListener('change', onFilterChangeHandler);
   imageElement.className = '';
   imageElement.style.filter = '';
   document.querySelector('#effect-none').checked = true;
