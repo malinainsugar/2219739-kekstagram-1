@@ -1,8 +1,8 @@
 
 import { renderSimilarList } from './rendering-mini.js';
 import { setUserFormSubmit, closeEditingWindow } from './form-script.js';
-import { getDataFromServer } from './api.js'
-import { showAlert } from './util.js'
+import { getDataFromServer } from './api.js';
+import { showAlert } from './util.js';
 
 getDataFromServer(
   (photos) => {
@@ -10,6 +10,6 @@ getDataFromServer(
   },
   (message) => {
     showAlert(message);
-  },)
+  },);
 
-setUserFormSubmit(closeEditingWindow)
+setUserFormSubmit(closeEditingWindow);

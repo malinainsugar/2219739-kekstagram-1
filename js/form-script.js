@@ -1,4 +1,4 @@
-import { isEscapeKey, checkForRepeats, showAlert } from './util.js';
+import { isEscapeKey, checkForRepeats } from './util.js';
 import { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters } from './editing-image.js';
 import { sendDataToServer } from './api.js';
 
@@ -124,7 +124,7 @@ function closeEditingWindow () {
   removeEventListenerImage();
   removeFilters();
 
-  editingWindow.querySelector('.scale__control--value').value = '100%'
+  editingWindow.querySelector('.scale__control--value').value = '100%';
   hashtagsInputElement.value = '';
   descriptionInputElement.value = '';
   loadImgButtonElement.value = '';
@@ -142,11 +142,11 @@ function unblockSubmitButton () {
 
 function onSuccessButtonHandler () {
   hideSuccessForm();
-};
+}
 
 function onErrorButtonHandler () {
   hideErrorForm();
-};
+}
 
 function onOutOfFormHandler (evt) {
   if (evt.target === successFormTemplate && evt.target !== successFormTemplate.querySelector('.success__inner')) {
@@ -155,21 +155,21 @@ function onOutOfFormHandler (evt) {
   if (evt.target === errorFormTemplate && evt.target !== errorFormTemplate.querySelector('.error__inner')) {
     hideErrorForm();
   }
-};
+}
 
 function onSuccessEscKeydownHandler (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideSuccessForm();
   }
-};
+}
 
 function onErrorEscKeydownHandler (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideErrorForm();
   }
-};
+}
 
 function showSuccessForm() {
   body.appendChild(successFormTemplate);
@@ -208,7 +208,7 @@ function setUserFormSubmit(onSuccess) {
     evt.preventDefault();
 
     blockSubmitButton();
-  
+
     sendDataToServer(
       () => {
         onSuccess();
@@ -221,7 +221,7 @@ function setUserFormSubmit(onSuccess) {
       },
       new FormData(evt.target),
     );
-  })
+  });
 }
 
-export {setUserFormSubmit, closeEditingWindow}
+export {setUserFormSubmit, closeEditingWindow};

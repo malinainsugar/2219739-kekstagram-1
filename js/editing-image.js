@@ -113,7 +113,7 @@ const filterValueElement = form.querySelector('.effect-level__value');
 
 
 function imageZoomOutHandler () {
-  let scaleValue = parseInt(scaleValueElement.value)
+  let scaleValue = parseInt(scaleValueElement.value, 10);
   if (scaleValue > 25) {
     scaleValue -= 25;
     scaleValueElement.value = `${scaleValue}%`;
@@ -122,7 +122,7 @@ function imageZoomOutHandler () {
 }
 
 function imageZoomInHandler () {
-  let scaleValue = parseInt(scaleValueElement.value)
+  let scaleValue = parseInt(scaleValueElement.value, 10);
   if (scaleValue <= 75) {
     scaleValue += 25;
     scaleValueElement.value = `${scaleValue}%`;

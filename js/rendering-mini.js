@@ -16,8 +16,8 @@ function renderSimilarList (similarPhotos) {
     });
     similarListFragment.append(photosElement);
   });
-  
-  picturesContainerElement.append(similarListFragment);
-} 
 
-export {renderSimilarList}
+  picturesContainerElement.append(similarListFragment);
+}
+
+export {renderSimilarList};

@@ -47,6 +47,6 @@ const showAlert = (message) => {
   setTimeout(() => {
     alertContainer.remove();
   }, ALERT_SHOW_TIME);
-}
+};
 
 export {getRandomArrayElement, getRandomNumber, isEscapeKey, checkForRepeats, showAlert};
