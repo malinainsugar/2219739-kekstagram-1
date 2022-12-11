@@ -7,8 +7,8 @@ const TIMEOUT_DELAY = 500;
 const RANDOM_PHOTOS_COUNT = 10;
 let selectedFilter = 'filter-default';
 
-const body = document.body
-const filterButtons = body.querySelectorAll('.img-filters__button');
+
+const filterButtons = document.body.querySelectorAll('.img-filters__button');
 
 const sortingCommentsCount = (photoA, photoB) => photoB.comments.length - photoA.comments.length;
 
@@ -42,28 +42,29 @@ const renderPhotos = (photos) => {
 
 const filterButtonsAddEvt = (cb) => {
   filterButtons.forEach((filterButton) => {
-      filterButton.addEventListener('click', (evt) => {
-        selectedFilter = evt.target.id;
-        filterButtons.forEach((button) => {
-          button.classList.remove('img-filters__button--active');
-        });
-        evt.target.classList.add('img-filters__button--active');
-        cb();
+    filterButton.addEventListener('click', (evt) => {
+      selectedFilter = evt.target.id;
+      filterButtons.forEach((button) => {
+        button.classList.remove('img-filters__button--active');
       });
+      evt.target.classList.add('img-filters__button--active');
+      cb();
     });
+  });
 };
 
 getDataFromServer(
-    (photos) => {
-      renderPhotos(photos);
-      document.querySelector('.img-filters').classList.remove('img-filters--inactive');
-      filterButtonsAddEvt(debounce(
-          () => renderPhotos(photos),
-          TIMEOUT_DELAY
-        ));
-    },
-    (message) => {
-      showAlert(message);
-    },);
-    
-  setUserFormSubmit(closeEditingWindow);
+  (photos) => {
+    renderPhotos(photos);
+    document.querySelector('.img-filters').classList.remove('img-filters--inactive');
+    filterButtonsAddEvt(debounce(
+        () => renderPhotos(photos),
+        TIMEOUT_DELAY
+      ));
+  },
+  (message) => {
+    showAlert(message);
+  },
+);
+
+setUserFormSubmit(closeEditingWindow);
