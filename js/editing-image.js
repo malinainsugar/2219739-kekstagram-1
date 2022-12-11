@@ -111,7 +111,6 @@ const filterButtonsContainer = form.querySelector('.effects__list');
 const sliderElement = form.querySelector('.effect-level__slider');
 const filterValueElement = form.querySelector('.effect-level__value');
 
-
 function imageZoomOutHandler () {
   let scaleValue = parseInt(scaleValueElement.value, 10);
   if (scaleValue > 25) {
@@ -198,6 +197,7 @@ function onFilterChangeHandler (evt) {
 
 function addsFilter () {
   filterValueElement.value = 1;
+  filterType = 'none';
   noUiSlider.create(sliderElement, FILTERS.NONE);
   sliderElement.setAttribute('hidden', true);
   filterButtonsContainer.addEventListener('change', onFilterChangeHandler);
@@ -215,10 +215,9 @@ function addsFilter () {
 const removeFilters = () => {
   filterButtonsContainer.removeEventListener('change', onFilterChangeHandler);
   imageElement.className = '';
-  imageElement.style.filter = '';
+  imageElement.style.transform = 'scale(1)';
   document.querySelector('#effect-none').checked = true;
   sliderElement.noUiSlider.destroy();
 };
-
 
 export { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters };
