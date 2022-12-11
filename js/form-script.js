@@ -31,8 +31,8 @@ const preview = document.querySelector('.img-upload__preview img');
 
 const successFormTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorFormTemplate = document.querySelector('#error').content.querySelector('.error');
-const errorButtonElement = errorFormTemplate.querySelector('.error__button')
-const successButtonElement = successFormTemplate.querySelector('.success__button')
+const errorButtonElement = errorFormTemplate.querySelector('.error__button');
+const successButtonElement = successFormTemplate.querySelector('.success__button');
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -91,6 +91,14 @@ const formValidateHandler = () => {
   }
 };
 
+const buttonClickHandler = () => closeEditingWindow();
+
+const buttonKeydownHandler = (evt) => {
+  if (isEscapeKey(evt) && (evt.target !== hashtagsInputElement && evt.target !== descriptionInputElement)) {
+    closeEditingWindow();
+  }
+};
+
 const openEditingWindow = () => {
   const img = loadImgButtonElement.files[0];
   const imgName = img.name.toLowerCase();
@@ -132,14 +140,6 @@ const closeEditingWindow = () => {
   loadImgButtonElement.value = '';
 };
 
-const buttonClickHandler = () => closeEditingWindow();
-
-const buttonKeydownHandler = (evt) => {
-  if (isEscapeKey(evt) && (evt.target !== hashtagsInputElement && evt.target !== descriptionInputElement)) {
-    closeEditingWindow();
-  }
-};
-
 const blockSubmitButton = () => {
   submitButtonElement.disabled = true;
   submitButtonElement.textContent = 'Публикую...';
@@ -149,25 +149,6 @@ const unblockSubmitButton = () => {
   submitButtonElement.disabled = false;
   submitButtonElement.textContent = 'Опубликовать';
 };
-
-const hideSuccessForm = () => {
-  document.removeEventListener('click', outOfFormHandler);
-  document.removeEventListener('keydown', successKeydownHandler);
-  body.removeChild(successFormTemplate);
-  successButtonElement.removeEventListener('click', successButtonHandler);
-};
-
-const hideErrorForm = () => {
-  editingWindowElement.classList.remove('hidden');
-  body.removeChild(errorFormTemplate);
-  errorButtonElement.removeEventListener('click', errorButtonHandler);
-  document.removeEventListener('click', outOfFormHandler);
-  document.removeEventListener('keydown', errorKeydownHandler);
-};
-
-const successButtonHandler = () => hideSuccessForm();
-
-const errorButtonHandler = () => hideErrorForm();
 
 const outOfFormHandler = (evt) => {
   if (evt.target === successFormTemplate && evt.target !== successFormTemplate.querySelector('.success__inner')) {
@@ -190,6 +171,25 @@ const errorKeydownHandler = (evt) => {
     evt.preventDefault();
     hideErrorForm();
   }
+};
+
+const successButtonHandler = () => hideSuccessForm();
+
+const errorButtonHandler = () => hideErrorForm();
+
+const hideSuccessForm = () => {
+  document.removeEventListener('click', outOfFormHandler);
+  document.removeEventListener('keydown', successKeydownHandler);
+  body.removeChild(successFormTemplate);
+  successButtonElement.removeEventListener('click', successButtonHandler);
+};
+
+const hideErrorForm = () => {
+  editingWindowElement.classList.remove('hidden');
+  body.removeChild(errorFormTemplate);
+  errorButtonElement.removeEventListener('click', errorButtonHandler);
+  document.removeEventListener('click', outOfFormHandler);
+  document.removeEventListener('keydown', errorKeydownHandler);
 };
 
 const showSuccessForm = () => {

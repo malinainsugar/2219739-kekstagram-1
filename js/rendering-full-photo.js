@@ -39,6 +39,14 @@ const loadNewComments = () => {
   }
 };
 
+const buttonClickHandler = () => closeBigPictureWindow();
+
+const buttonKeydownHandler = (evt) => {
+  if (isEscapeKey(evt)) {
+    closeBigPictureWindow();
+  }
+};
+
 const closeBigPictureWindow = () => {
   document.removeEventListener('keydown', buttonKeydownHandler);
   closeButtonElement.removeEventListener('click', buttonClickHandler);
@@ -65,14 +73,6 @@ const openBigPictureWindow = ({url, description, likes, comments}) => {
   closeButtonElement.addEventListener('click',  buttonClickHandler);
   document.addEventListener('keydown', buttonKeydownHandler);
   loaderСommentsButtonElement.addEventListener('click',  loadNewComments);
-};
-
-const buttonClickHandler = () => closeBigPictureWindow();
-
-const buttonKeydownHandler = (evt) => {
-  if (isEscapeKey(evt)) {
-    closeBigPictureWindow();
-  }
 };
 
 export {openBigPictureWindow};
