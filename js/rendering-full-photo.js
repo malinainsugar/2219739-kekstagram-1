@@ -6,21 +6,21 @@ let commentsCounter;
 let allComments;
 
 const bigPictureWindow = document.querySelector('.big-picture');
-const commentsTemplate = bigPictureWindow.querySelector('#comment').content.querySelector('.social__comment');
+const commentTemplate = bigPictureWindow.querySelector('#comment').content.querySelector('.social__comment');
 const closedButtonElement = bigPictureWindow.querySelector('.big-picture__cancel');
 const commentsContainer = bigPictureWindow.querySelector('.social__comments');
 const loadingСommentsButtonElement = bigPictureWindow.querySelector('.comments-loader');
 const shownCommentsCount = bigPictureWindow.querySelector('.shown-comments-count');
 
-const buttonClickHandler = () => closeWindow();
+const buttonClickHandler = () => closeBigPictureWindow();
 
 function buttonKeydownHandler (evt) {
   if (isEscapeKey(evt)) {
-    closeWindow();
+    closeBigPictureWindow();
   }
 }
 
-function closeWindow () {
+function closeBigPictureWindow () {
   document.removeEventListener('keydown', buttonKeydownHandler);
   closedButtonElement.removeEventListener('click', buttonClickHandler);
   bigPictureWindow.classList.add('hidden');
@@ -29,16 +29,14 @@ function closeWindow () {
 }
 
 function appendNewComments({avatar, name, message}) {
-  const newComment = commentsTemplate.cloneNode(true);
+  const newComment = commentTemplate.cloneNode(true);
   newComment.querySelector('.social__picture').src = avatar;
   newComment.querySelector('.social__picture').alt = name;
   newComment.querySelector('.social__text').textContent = message;
   return newComment;
 }
 
-function updateCommentsCount (value) {
-  shownCommentsCount.textContent = value;
-}
+const updateCommentsCount = (value) => shownCommentsCount.textContent = value;
 
 function loadNewComments () {
   let addingCounter = MAX_COMMENTS_COUNT;

@@ -1,4 +1,4 @@
-const FILTERS = {
+const Filters = {
   NONE: {
     range: {
       min: 0,
@@ -151,37 +151,37 @@ function customiseFilter (filterID) {
       filterClass = 'effects__preview--none';
       filterType = 'none';
       sliderElement.setAttribute('hidden', true);
-      options = FILTERS.NONE;
+      options = Filters.NONE;
       break;
     case 'effect-chrome':
       filterClass = 'effects__preview--chrome';
       filterType = 'grayscale';
       sliderElement.removeAttribute('hidden', true);
-      options = FILTERS.CHROME;
+      options = Filters.CHROME;
       break;
     case 'effect-sepia':
       filterClass = 'effects__preview--sepia';
       filterType = 'sepia';
       sliderElement.removeAttribute('hidden', true);
-      options = FILTERS.SEPIA;
+      options = Filters.SEPIA;
       break;
     case 'effect-marvin':
       filterClass = 'effects__preview--marvin';
       filterType = 'invert';
       sliderElement.removeAttribute('hidden', true);
-      options = FILTERS.MARVIN;
+      options = Filters.MARVIN;
       break;
     case 'effect-phobos':
       filterClass = 'effects__preview--phobos';
       filterType = 'blur';
       sliderElement.removeAttribute('hidden', true);
-      options = FILTERS.PHOBOS;
+      options = Filters.PHOBOS;
       break;
     case 'effect-heat':
       filterClass= 'effects__preview--heat';
       filterType = 'brightness';
       sliderElement.removeAttribute('hidden', true);
-      options = FILTERS.HEAT;
+      options = Filters.HEAT;
       break;
   }
   imageElement.className = '';
@@ -195,10 +195,10 @@ function onFilterChangeHandler (evt) {
   }
 }
 
-function addsFilter () {
+function addFilter () {
   filterValueElement.value = 1;
   filterType = 'none';
-  noUiSlider.create(sliderElement, FILTERS.NONE);
+  noUiSlider.create(sliderElement, Filters.NONE);
   sliderElement.setAttribute('hidden', true);
   filterButtonsContainer.addEventListener('change', onFilterChangeHandler);
 
@@ -220,4 +220,4 @@ const removeFilters = () => {
   sliderElement.noUiSlider.destroy();
 };
 
-export { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters };
+export {form, addEventListenerImage, removeEventListenerImage, addFilter, removeFilters};

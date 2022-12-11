@@ -1,14 +1,14 @@
 import { isEscapeKey, checkForRepeats } from './util.js';
-import { form, addEventListenerImage, removeEventListenerImage, addsFilter, removeFilters } from './editing-image.js';
+import { form, addEventListenerImage, removeEventListenerImage, addFilter, removeFilters } from './editing-image.js';
 import { sendDataToServer } from './api.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 const MAX_LENGTH_COMMENT = 140;
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_HASHTAGS_COUNT = 5;
-let massageHashtagError = '';
+let messageHashtagError = '';
 
-const HASHTAG_RULES = {
+const HashtagRules = {
   HASHTAG_SYMBOL: 'Хэш-тег начинается с символа # (решётка).',
   VALID_CHARACTERS: 'Cтрока после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д..',
   ONLY_HASHTAG: 'Хеш-тег не может состоять только из одной решётки.',
@@ -50,42 +50,41 @@ const pristine = new Pristine(form, {
 }, true);
 
 function validateHashtag (value) {
-  massageHashtagError = HASHTAG_RULES.OKAY;
-  value = value.trim();
-  value = value.toLowerCase();
+  messageHashtagError = HashtagRules.OKAY;
+  value = value.trim().toLowerCase();
   const hashtags = value.split(' ');
   if (hashtags[0] !== '') {
     for (const hashtag of hashtags) {
-      if (!re.test(hashtag)){
+      if (!re.test(hashtag)) {
         if (hashtag[0] !== '#') {
-          massageHashtagError = HASHTAG_RULES.HASHTAG_SYMBOL;
+          messageHashtagError = HashtagRules.HASHTAG_SYMBOL;
           return false;
         }
         if (hashtag.length === 1 && hashtag[0]=== '#') {
-          massageHashtagError = HASHTAG_RULES.ONLY_HASHTAG;
+          messageHashtagError = HashtagRules.ONLY_HASHTAG;
           return false;
         }
         if (hashtag.length > MAX_LENGTH_HASHTAG) {
-          massageHashtagError = HASHTAG_RULES.MAX_LENGTH;
+          messageHashtagError = HashtagRules.MAX_LENGTH;
           return false;
         }
-        massageHashtagError = HASHTAG_RULES.VALID_CHARACTERS;
+        messageHashtagError = HashtagRules.VALID_CHARACTERS;
         return false;
       }
     }
     if (hashtags.length > MAX_HASHTAGS_COUNT) {
-      massageHashtagError = HASHTAG_RULES.MAX_COUNT;
+      messageHashtagError = HashtagRules.MAX_COUNT;
       return false;
     }
     if (checkForRepeats(hashtags)) {
-      massageHashtagError = HASHTAG_RULES.NO_REPEAT;
+      messageHashtagError = HashtagRules.NO_REPEAT;
       return false;
     }
   }
   return true;
 }
 
-const generateMessageHashtags = () => massageHashtagError;
+const generateMessageHashtags = () => messageHashtagError;
 
 const validateDescription = (value) => value.length <= MAX_LENGTH_COMMENT;
 
@@ -101,14 +100,12 @@ function validateForm () {
 }
 
 function openEditingWindow () {
-  const file = loadImgButtonElement.files[0];
-  const fileName = file.name.toLowerCase();
-  const matches = FILE_TYPES.some((it) => {
-    return fileName.endsWith(it);
-  });
+  const img = loadImgButtonElement.files[0];
+  const imgName = img.name.toLowerCase();
+  const matches = FILE_TYPES.some((it) => imgName.endsWith(it));
 
   if (matches) {
-    preview.src = URL.createObjectURL(file);
+    preview.src = URL.createObjectURL(img);
   }
 
   editingWindow.classList.remove('hidden');
@@ -120,7 +117,7 @@ function openEditingWindow () {
   descriptionInputElement.addEventListener('input', validateForm);
 
   addEventListenerImage();
-  addsFilter();
+  addFilter();
 }
 
 function closeEditingWindow () {
