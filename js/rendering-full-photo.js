@@ -47,13 +47,13 @@ const buttonKeydownHandler = (evt) => {
   }
 };
 
-const closeBigPictureWindow = () => {
+function closeBigPictureWindow () {
   document.removeEventListener('keydown', buttonKeydownHandler);
   closeButtonElement.removeEventListener('click', buttonClickHandler);
   bigPictureWindowElement.classList.add('hidden');
   document.body.classList.remove('modal-open');
   loaderСommentsButtonElement.removeEventListener('click',  loadNewComments);
-};
+}
 
 const openBigPictureWindow = ({url, description, likes, comments}) => {
   bigPictureWindowElement.querySelector('.big-picture__img').querySelector('img').setAttribute('src', url);

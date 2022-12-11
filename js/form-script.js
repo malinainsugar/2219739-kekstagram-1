@@ -122,7 +122,7 @@ const openEditingWindow = () => {
 
 loadImgButtonElement.addEventListener('input', openEditingWindow);
 
-const closeEditingWindow = () => {
+function closeEditingWindow () {
   editingWindowElement.classList.add('hidden');
   body.classList.remove('modal-open');
 
@@ -138,7 +138,7 @@ const closeEditingWindow = () => {
   hashtagsInputElement.value = '';
   descriptionInputElement.value = '';
   loadImgButtonElement.value = '';
-};
+}
 
 const blockSubmitButton = () => {
   submitButtonElement.disabled = true;
@@ -177,20 +177,20 @@ const successButtonHandler = () => hideSuccessForm();
 
 const errorButtonHandler = () => hideErrorForm();
 
-const hideSuccessForm = () => {
+function hideSuccessForm () {
   document.removeEventListener('click', outOfFormHandler);
   document.removeEventListener('keydown', successKeydownHandler);
   body.removeChild(successFormTemplate);
   successButtonElement.removeEventListener('click', successButtonHandler);
-};
+}
 
-const hideErrorForm = () => {
+function hideErrorForm () {
   editingWindowElement.classList.remove('hidden');
   body.removeChild(errorFormTemplate);
   errorButtonElement.removeEventListener('click', errorButtonHandler);
   document.removeEventListener('click', outOfFormHandler);
   document.removeEventListener('keydown', errorKeydownHandler);
-};
+}
 
 const showSuccessForm = () => {
   successButtonElement.addEventListener('click', successButtonHandler);
