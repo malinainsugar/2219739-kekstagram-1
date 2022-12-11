@@ -189,7 +189,7 @@ function customiseFilter (filterID) {
   sliderElement.noUiSlider.updateOptions(options);
 }
 
-function onFilterChangeHandler (evt) {
+function filterChangeHandler (evt) {
   if (evt.target.closest('.effects__item')) {
     customiseFilter(evt.target.id);
   }
@@ -200,7 +200,7 @@ function addFilter () {
   filterType = 'none';
   noUiSlider.create(sliderElement, Filters.NONE);
   sliderElement.setAttribute('hidden', true);
-  filterButtonsContainer.addEventListener('change', onFilterChangeHandler);
+  filterButtonsContainer.addEventListener('change', filterChangeHandler);
 
   sliderElement.noUiSlider.on('update', () => {
     filterValueElement.value = parseFloat(sliderElement.noUiSlider.get());
@@ -213,7 +213,7 @@ function addFilter () {
 }
 
 const removeFilters = () => {
-  filterButtonsContainer.removeEventListener('change', onFilterChangeHandler);
+  filterButtonsContainer.removeEventListener('change', filterChangeHandler);
   imageElement.className = '';
   imageElement.style.transform = 'scale(1)';
   document.querySelector('#effect-none').checked = true;

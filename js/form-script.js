@@ -8,7 +8,7 @@ const MAX_LENGTH_HASHTAG = 20;
 const MAX_HASHTAGS_COUNT = 5;
 let messageHashtagError = '';
 
-const HashtagRules = {
+const HashtagsRules = {
   HASHTAG_SYMBOL: 'Хэш-тег начинается с символа # (решётка).',
   VALID_CHARACTERS: 'Cтрока после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т. п.), символы пунктуации (тире, дефис, запятая и т. п.), эмодзи и т. д..',
   ONLY_HASHTAG: 'Хеш-тег не может состоять только из одной решётки.',
@@ -50,34 +50,34 @@ const pristine = new Pristine(form, {
 }, true);
 
 function validateHashtag (value) {
-  messageHashtagError = HashtagRules.OKAY;
+  messageHashtagError = HashtagsRules.OKAY;
   value = value.trim().toLowerCase();
   const hashtags = value.split(' ');
   if (hashtags[0] !== '') {
     for (const hashtag of hashtags) {
       if (!re.test(hashtag)) {
         if (hashtag[0] !== '#') {
-          messageHashtagError = HashtagRules.HASHTAG_SYMBOL;
+          messageHashtagError = HashtagsRules.HASHTAG_SYMBOL;
           return false;
         }
         if (hashtag.length === 1 && hashtag[0] === '#') {
-          messageHashtagError = HashtagRules.ONLY_HASHTAG;
+          messageHashtagError = HashtagsRules.ONLY_HASHTAG;
           return false;
         }
         if (hashtag.length > MAX_LENGTH_HASHTAG) {
-          messageHashtagError = HashtagRules.MAX_LENGTH;
+          messageHashtagError = HashtagsRules.MAX_LENGTH;
           return false;
         }
-        messageHashtagError = HashtagRules.VALID_CHARACTERS;
+        messageHashtagError = HashtagsRules.VALID_CHARACTERS;
         return false;
       }
     }
     if (hashtags.length > MAX_HASHTAGS_COUNT) {
-      messageHashtagError = HashtagRules.MAX_COUNT;
+      messageHashtagError = HashtagsRules.MAX_COUNT;
       return false;
     }
     if (checkForRepeats(hashtags)) {
-      messageHashtagError = HashtagRules.NO_REPEAT;
+      messageHashtagError = HashtagsRules.NO_REPEAT;
       return false;
     }
   }
@@ -91,7 +91,7 @@ const validateDescription = (value) => value.length <= MAX_LENGTH_COMMENT;
 pristine.addValidator(hashtagsInputElement, validateHashtag, generateMessageHashtags);
 pristine.addValidator(descriptionInputElement, validateDescription, 'Длина комментария не может составлять больше 140 символов');
 
-function validateForm () {
+function formValidateHandler () {
   if (pristine.validate()) {
     submitButtonElement.disabled = false;
   } else {
@@ -113,8 +113,8 @@ function openEditingWindow () {
 
   editingCloseButtonElement.addEventListener('click', buttonClickHandler);
   document.addEventListener('keydown', buttonKeydownHandler);
-  hashtagsInputElement.addEventListener('input', validateForm);
-  descriptionInputElement.addEventListener('input', validateForm);
+  hashtagsInputElement.addEventListener('input', formValidateHandler);
+  descriptionInputElement.addEventListener('input', formValidateHandler);
 
   addEventListenerImage();
   addFilter();
@@ -126,8 +126,8 @@ function closeEditingWindow () {
 
   editingCloseButtonElement.removeEventListener('click', buttonClickHandler);
   document.removeEventListener('keydown', buttonKeydownHandler);
-  hashtagsInputElement.removeEventListener('input', validateForm);
-  descriptionInputElement.removeEventListener('input', validateForm);
+  hashtagsInputElement.removeEventListener('input', formValidateHandler);
+  descriptionInputElement.removeEventListener('input', formValidateHandler);
 
   removeEventListenerImage();
   removeFilters();
@@ -148,15 +148,15 @@ function unblockSubmitButton () {
   submitButtonElement.textContent = 'Опубликовать';
 }
 
-function onSuccessButtonHandler () {
+function successButtonHandler () {
   hideSuccessForm();
 }
 
-function onErrorButtonHandler () {
+function errorButtonHandler () {
   hideErrorForm();
 }
 
-function onOutOfFormHandler (evt) {
+function outOfFormHandler (evt) {
   if (evt.target === successFormTemplate && evt.target !== successFormTemplate.querySelector('.success__inner')) {
     hideSuccessForm();
   }
@@ -165,14 +165,14 @@ function onOutOfFormHandler (evt) {
   }
 }
 
-function onSuccessEscKeydownHandler (evt) {
+function successKeydownHandler (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideSuccessForm();
   }
 }
 
-function onErrorEscKeydownHandler (evt) {
+function errorKeydownHandler (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideErrorForm();
@@ -180,35 +180,35 @@ function onErrorEscKeydownHandler (evt) {
 }
 
 function showSuccessForm() {
+  successFormTemplate.querySelector('.success__button').addEventListener('click', successButtonHandler);
   body.appendChild(successFormTemplate);
-  successFormTemplate.querySelector('.success__button').addEventListener('click', onSuccessButtonHandler);
-  document.addEventListener('click', onOutOfFormHandler);
-  document.addEventListener('keydown', onSuccessEscKeydownHandler);
+  document.addEventListener('click', outOfFormHandler);
+  document.addEventListener('keydown', successKeydownHandler);
 }
 
 function hideSuccessForm() {
-  successFormTemplate.querySelector('.success__button').removeEventListener('click', onSuccessButtonHandler);
-  document.removeEventListener('click', onOutOfFormHandler);
-  document.removeEventListener('keydown', onSuccessEscKeydownHandler);
+  document.removeEventListener('click', outOfFormHandler);
+  document.removeEventListener('keydown', successKeydownHandler);
   body.removeChild(successFormTemplate);
+  successFormTemplate.querySelector('.success__button').removeEventListener('click', successButtonHandler);
 }
 
 function showErrorForm (message) {
   editingWindow.classList.add('hidden');
   errorFormTemplate.querySelector('.error__button').textContent = 'Попробовать ещё раз';
-  body.appendChild(errorFormTemplate);
   errorFormTemplate.querySelector('.error__title').textContent = message;
-  errorFormTemplate.querySelector('.error__button').addEventListener('click', onErrorButtonHandler);
-  document.addEventListener('click', onOutOfFormHandler);
-  document.addEventListener('keydown', onErrorEscKeydownHandler);
+  errorFormTemplate.querySelector('.error__button').addEventListener('click', errorButtonHandler);
+  body.appendChild(errorFormTemplate);
+  document.addEventListener('click', outOfFormHandler);
+  document.addEventListener('keydown', errorKeydownHandler);
 }
 
 function hideErrorForm() {
   editingWindow.classList.remove('hidden');
-  errorFormTemplate.querySelector('.error__button').removeEventListener('click', onErrorButtonHandler);
-  document.removeEventListener('click', onOutOfFormHandler);
-  document.removeEventListener('keydown', onErrorEscKeydownHandler);
   body.removeChild(errorFormTemplate);
+  errorFormTemplate.querySelector('.error__button').removeEventListener('click', errorButtonHandler);
+  document.removeEventListener('click', outOfFormHandler);
+  document.removeEventListener('keydown', errorKeydownHandler);
 }
 
 function setUserFormSubmit(onSuccess) {

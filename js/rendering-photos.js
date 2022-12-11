@@ -56,10 +56,7 @@ getDataFromServer(
   (photos) => {
     renderPhotos(photos);
     document.querySelector('.img-filters').classList.remove('img-filters--inactive');
-    filterButtonsAddEvent(debounce(
-      () => renderPhotos(photos),
-      TIMEOUT_DELAY
-    ));
+    filterButtonsAddEvent(debounce(() => renderPhotos(photos), TIMEOUT_DELAY));
   },
   (message) => showAlert(message),
 );

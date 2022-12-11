@@ -48,9 +48,7 @@ function loadNewComments () {
       loadingСommentsButtonElement.classList.add('hidden');
     }
     const fragment = document.createDocumentFragment();
-    allComments.slice(commentsCounter, commentsCounter + addingCounter).forEach((comment) => {
-      fragment.appendChild(appendNewComments(comment));
-    });
+    allComments.slice(commentsCounter, commentsCounter + addingCounter).forEach((comment) => fragment.appendChild(appendNewComments(comment)));
     commentsContainer.appendChild(fragment);
     commentsCounter += addingCounter;
     updateCommentsCount(commentsCounter);
