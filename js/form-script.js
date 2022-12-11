@@ -60,7 +60,7 @@ function validateHashtag (value) {
           messageHashtagError = HashtagRules.HASHTAG_SYMBOL;
           return false;
         }
-        if (hashtag.length === 1 && hashtag[0]=== '#') {
+        if (hashtag.length === 1 && hashtag[0] === '#') {
           messageHashtagError = HashtagRules.ONLY_HASHTAG;
           return false;
         }

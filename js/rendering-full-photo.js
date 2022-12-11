@@ -1,5 +1,5 @@
 
-import {isEscapeKey} from './util.js';
+import { isEscapeKey } from './util.js';
 
 const MAX_COMMENTS_COUNT = 5;
 let commentsCounter;
@@ -36,7 +36,9 @@ function appendNewComments({avatar, name, message}) {
   return newComment;
 }
 
-const updateCommentsCount = (value) => shownCommentsCount.textContent = value;
+function updateCommentsCount (value) {
+  shownCommentsCount.textContent = value;
+}
 
 function loadNewComments () {
   let addingCounter = MAX_COMMENTS_COUNT;

@@ -6,8 +6,6 @@ function getRandomNumber (a, b) {
   return Math.floor(Math.random() * (upper - lower + 1) + lower);
 }
 
-const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
-
 const isEscapeKey = (evt) => evt.keyCode === 27;
 
 function checkForRepeats (list) {
@@ -50,4 +48,4 @@ function debounce (callback, timeoutDelay = 500) {
   };
 }
 
-export {getRandomArrayElement, getRandomNumber, isEscapeKey, checkForRepeats, showAlert, debounce};
+export {getRandomNumber, isEscapeKey, checkForRepeats, showAlert, debounce};

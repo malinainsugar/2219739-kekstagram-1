@@ -1,4 +1,4 @@
-import {openBigPictureWindow} from './rendering-full-photo.js';
+import { openBigPictureWindow } from './rendering-full-photo.js';
 
 const picturesContainerElement = document.querySelector('.pictures');
 const picturesTemplate = document.querySelector('#picture').content.querySelector('a');
