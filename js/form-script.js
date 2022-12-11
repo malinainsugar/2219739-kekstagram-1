@@ -1,5 +1,5 @@
 import { isEscapeKey, checkForRepeats } from './util.js';
-import { form, addEventListenerImage, removeEventListenerImage, addFilter, removeFilters } from './editing-image.js';
+import { form, addEventListenerImage, removeEventListenerImage, addFilter, removeFilters, scaleValueElement } from './editing-image.js';
 import { sendDataToServer } from './api.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
@@ -31,14 +31,8 @@ const preview = document.querySelector('.img-upload__preview img');
 
 const successFormTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorFormTemplate = document.querySelector('#error').content.querySelector('.error');
-
-const buttonClickHandler = () => closeEditingWindow();
-
-const buttonKeydownHandler = (evt) => {
-  if (isEscapeKey(evt) && (evt.target !== hashtagsInputElement && evt.target !== descriptionInputElement)) {
-    closeEditingWindow();
-  }
-}
+const errorButtonElement = errorFormTemplate.querySelector('.error__button')
+const successButtonElement = successFormTemplate.querySelector('.success__button')
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -80,7 +74,7 @@ const validateHashtag = (value) => {
     }
   }
   return true;
-}
+};
 
 const generateMessageHashtags = () => messageHashtagError;
 
@@ -90,8 +84,12 @@ pristine.addValidator(hashtagsInputElement, validateHashtag, generateMessageHash
 pristine.addValidator(descriptionInputElement, validateDescription, 'Длина комментария не может составлять больше 140 символов');
 
 const formValidateHandler = () => {
-  submitButtonElement.disabled = (pristine.validate()) ? false : true
-}
+  if (pristine.validate()) {
+    submitButtonElement.disabled = false;
+  } else {
+    submitButtonElement.disabled = true;
+  }
+};
 
 const openEditingWindow = () => {
   const img = loadImgButtonElement.files[0];
@@ -112,7 +110,7 @@ const openEditingWindow = () => {
 
   addEventListenerImage();
   addFilter();
-}
+};
 
 loadImgButtonElement.addEventListener('input', openEditingWindow);
 
@@ -128,21 +126,44 @@ const closeEditingWindow = () => {
   removeEventListenerImage();
   removeFilters();
 
-  editingWindowElement.querySelector('.scale__control--value').value = '100%';
+  scaleValueElement.value = '100%';
   hashtagsInputElement.value = '';
   descriptionInputElement.value = '';
   loadImgButtonElement.value = '';
-}
+};
+
+const buttonClickHandler = () => closeEditingWindow();
+
+const buttonKeydownHandler = (evt) => {
+  if (isEscapeKey(evt) && (evt.target !== hashtagsInputElement && evt.target !== descriptionInputElement)) {
+    closeEditingWindow();
+  }
+};
 
 const blockSubmitButton = () => {
   submitButtonElement.disabled = true;
   submitButtonElement.textContent = 'Публикую...';
-}
+};
 
 const unblockSubmitButton = () => {
   submitButtonElement.disabled = false;
   submitButtonElement.textContent = 'Опубликовать';
-}
+};
+
+const hideSuccessForm = () => {
+  document.removeEventListener('click', outOfFormHandler);
+  document.removeEventListener('keydown', successKeydownHandler);
+  body.removeChild(successFormTemplate);
+  successButtonElement.removeEventListener('click', successButtonHandler);
+};
+
+const hideErrorForm = () => {
+  editingWindowElement.classList.remove('hidden');
+  body.removeChild(errorFormTemplate);
+  errorButtonElement.removeEventListener('click', errorButtonHandler);
+  document.removeEventListener('click', outOfFormHandler);
+  document.removeEventListener('keydown', errorKeydownHandler);
+};
 
 const successButtonHandler = () => hideSuccessForm();
 
@@ -155,53 +176,38 @@ const outOfFormHandler = (evt) => {
   if (evt.target === errorFormTemplate && evt.target !== errorFormTemplate.querySelector('.error__inner')) {
     hideErrorForm();
   }
-}
+};
 
 const successKeydownHandler = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideSuccessForm();
   }
-}
+};
 
 const errorKeydownHandler = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     hideErrorForm();
   }
-}
+};
 
 const showSuccessForm = () => {
-  successFormTemplate.querySelector('.success__button').addEventListener('click', successButtonHandler);
+  successButtonElement.addEventListener('click', successButtonHandler);
   body.appendChild(successFormTemplate);
   document.addEventListener('click', outOfFormHandler);
   document.addEventListener('keydown', successKeydownHandler);
-}
-
-const hideSuccessForm = () => {
-  document.removeEventListener('click', outOfFormHandler);
-  document.removeEventListener('keydown', successKeydownHandler);
-  body.removeChild(successFormTemplate);
-  successFormTemplate.querySelector('.success__button').removeEventListener('click', successButtonHandler);
-}
+};
 
 const showErrorForm = (message) => {
   editingWindowElement.classList.add('hidden');
-  errorFormTemplate.querySelector('.error__button').textContent = 'Попробовать ещё раз';
+  errorButtonElement.textContent = 'Попробовать ещё раз';
   errorFormTemplate.querySelector('.error__title').textContent = message;
-  errorFormTemplate.querySelector('.error__button').addEventListener('click', errorButtonHandler);
+  errorButtonElement.addEventListener('click', errorButtonHandler);
   body.appendChild(errorFormTemplate);
   document.addEventListener('click', outOfFormHandler);
   document.addEventListener('keydown', errorKeydownHandler);
-}
-
-const hideErrorForm = () => {
-  editingWindowElement.classList.remove('hidden');
-  body.removeChild(errorFormTemplate);
-  errorFormTemplate.querySelector('.error__button').removeEventListener('click', errorButtonHandler);
-  document.removeEventListener('click', outOfFormHandler);
-  document.removeEventListener('keydown', errorKeydownHandler);
-}
+};
 
 const setUserFormSubmit = (onSuccess) => {
   form.addEventListener('submit', (evt) => {
@@ -222,6 +228,6 @@ const setUserFormSubmit = (onSuccess) => {
       new FormData(evt.target),
     );
   });
-}
+};
 
 export {setUserFormSubmit, closeEditingWindow};

@@ -98,6 +98,10 @@ const Filters = {
   }
 };
 
+const MIN_SCALE = 25;
+const MAX_SCALE = 100;
+const STEP_SCALE = 25;
+
 let filterType = 'none';
 
 const form = document.querySelector('.img-upload__form');
@@ -113,31 +117,31 @@ const filterValueElement = form.querySelector('.effect-level__value');
 
 const imageZoomOutHandler = () => {
   let scaleValue = parseInt(scaleValueElement.value, 10);
-  if (scaleValue > 25) {
-    scaleValue -= 25;
+  if (scaleValue > MIN_SCALE) {
+    scaleValue -= STEP_SCALE;
     scaleValueElement.value = `${scaleValue}%`;
     imageElement.style.transform = `scale(0.${scaleValue})`;
   }
-}
+};
 
 const imageZoomInHandler = () => {
   let scaleValue = parseInt(scaleValueElement.value, 10);
-  if (scaleValue <= 75) {
-    scaleValue += 25;
+  if (scaleValue < MAX_SCALE) {
+    scaleValue += STEP_SCALE;
     scaleValueElement.value = `${scaleValue}%`;
-    imageElement.style.transform = (scaleValue === 100) ? 'scale(1)' : `scale(0.${scaleValue})`;
+    imageElement.style.transform = (scaleValue === MAX_SCALE) ? 'scale(1)' : `scale(0.${scaleValue})`;
   }
-}
+};
 
 const addEventListenerImage = () => {
   zoomOutButtonElement.addEventListener('click', imageZoomOutHandler);
   zoomButtonElement.addEventListener('click', imageZoomInHandler);
-}
+};
 
 const removeEventListenerImage = () => {
   zoomOutButtonElement.removeEventListener('click', imageZoomOutHandler);
   zoomButtonElement.removeEventListener('click', imageZoomInHandler);
-}
+};
 
 const customiseFilter = (filterID) => {
   let filterClass;
@@ -183,13 +187,13 @@ const customiseFilter = (filterID) => {
   imageElement.className = '';
   imageElement.classList.add(filterClass);
   sliderElement.noUiSlider.updateOptions(options);
-}
+};
 
 const filterChangeHandler = (evt) => {
   if (evt.target.closest('.effects__item')) {
     customiseFilter(evt.target.id);
   }
-}
+};
 
 const addFilter = () => {
   filterValueElement.value = 1;
@@ -202,7 +206,7 @@ const addFilter = () => {
     filterValueElement.value = parseFloat(sliderElement.noUiSlider.get());
     imageElement.style.filter = (filterType !== 'none') ? `${filterType}(${sliderElement.noUiSlider.get()})` : '';
   });
-}
+};
 
 const removeFilters = () => {
   filterButtonsContainerElement.removeEventListener('change', filterChangeHandler);
@@ -212,4 +216,4 @@ const removeFilters = () => {
   sliderElement.noUiSlider.destroy();
 };
 
-export {form, addEventListenerImage, removeEventListenerImage, addFilter, removeFilters};
+export {form, addEventListenerImage, removeEventListenerImage, addFilter, removeFilters, scaleValueElement};

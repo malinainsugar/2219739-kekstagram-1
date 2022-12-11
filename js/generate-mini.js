@@ -18,6 +18,6 @@ const renderPhotosList = (photosList) => {
   });
 
   picturesContainerElement.append(photosListFragment);
-}
+};
 
 export {renderPhotosList};
